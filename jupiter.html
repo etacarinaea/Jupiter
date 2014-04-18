@@ -1,0 +1,160 @@
+<html>
+	<head>
+		<title>Jupiter</title>
+		<!--- Thursday, 17/04/2014 --->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+		
+		<script>
+			function set(){
+				var t = document.getElementById("ut").value;
+				var ts = document.getElementById("uts").value;
+				
+				if(t==""){
+					t = 0;
+				}
+				if(ts==""){
+					ts = 0.0000005;
+				}
+				
+				localStorage.setItem("t", t);
+				localStorage.setItem("ts", ts);
+				
+				location.reload(); 
+			}
+		</script>
+		
+		<script src="jupiter-top.js"></script>
+		
+		<style>
+			#Jupiter {
+				position: absolute;
+				left: 400px;
+				top: 175px;
+				
+				height: 50px;
+				width: 50px;
+				
+				border-radius: 25px;
+				
+				background-color: rgba(153,128,108,0.7);
+			}
+			
+			#IoDIV {
+				position: absolute;
+				left: 400px;
+				top: 200px;
+				
+				height: 4px;
+				width: 4px;
+				
+				border-radius: 2px;
+				
+				background-color: #000000;
+			}
+			#IoName {
+				position: relative;
+				left: 6px;
+				top: 3px;
+			}
+			
+			#EuropaDIV {
+				position: absolute;
+				left: 400px;
+				top: 200px;
+				
+				height: 2px;
+				width: 2px;
+				
+				border-radius: 1px;
+				
+				background-color: #000000;
+			}
+			#EuropaName {
+				position: relative;
+				left: 6px;
+				top: 3px;
+			}
+			
+			#GanymedeDIV {
+				position: absolute;
+				left: 400px;
+				top: 200px;
+				
+				height: 8px;
+				width: 8px;
+				
+				border-radius: 4px;
+				
+				background-color: #000000;
+			}
+			#GanymedeName {
+				position: relative;
+				left: 6px;
+				top: 3px;
+			}
+			
+			#CallistoDIV {
+				position: absolute;
+				left: 400px;
+				top: 200px;
+				
+				height: 6px;
+				width: 6px;
+				
+				border-radius: 3px;
+				
+				background-color: #000000;
+			}
+			#CallistoName {
+				position: relative;
+				left: 6px;
+				top: 3px;
+			}
+			
+			
+			body {
+				background-color: #FFFFFF;
+				
+				color: #000000;
+				font-family: 'Open Sans', sans-serif;
+				font-size: 11;
+			}
+			
+			#main {
+				position: absolute;
+				top: 450px;
+				left: 0;
+				
+				font-family: 'Arial', sans-serif;
+				font-size: 16;
+				
+				height: 100px;
+				width: 100%;
+				
+				background-color: rgba(0,0,0,0.2);
+			}
+		</style>
+	</head>
+	<body>
+		<div id="Jupiter"></div>
+		
+		<div id="IoDIV"><span id="IoName">Io</span></div>
+		<div id="EuropaDIV"><span id="EuropaName">Europa</span></div>
+		<div id="GanymedeDIV"><span id="GanymedeName">Ganymede</span></div>
+		<div id="CallistoDIV"><span id="CallistoName">Callisto</span></div>
+		
+		
+		<div id="main">
+			Io, Europa, Ganymede & Callisto<br>
+			<input type="text" id="ut"></input> Day - default = 0<br>
+			<input type="text" id="uts"></input> Time Scale - default = 0.0000005<br>
+			<button onclick="set()">set</button> 
+			
+		</div>
+		
+	</body>
+</html>
+
+
+
+
