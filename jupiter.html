@@ -13,7 +13,7 @@
 					t = 0;
 				}
 				if(ts==""){
-					ts = 0.0000005;
+					ts = 5;
 				}
 				
 				localStorage.setItem("t", t);
@@ -31,10 +31,10 @@
 				left: 400px;
 				top: 175px;
 				
-				height: 50px;
-				width: 50px;
+				height: 30px;
+				width: 30px;
 				
-				border-radius: 25px;
+				border-radius: 15px;
 				
 				background-color: rgba(153,128,108,0.7);
 			}
@@ -128,11 +128,25 @@
 				font-family: 'Arial', sans-serif;
 				font-size: 16;
 				
-				height: 100px;
 				width: 100%;
 				
 				background-color: rgba(0,0,0,0.2);
 			}
+			.t {
+				padding: 5px;
+				display: inline-block;
+				background-color: rgba(255,255,255,0.5);
+			}
+			.tn {
+				text-align: center;
+				padding: 5px;
+				display: inline-block;
+				background-color: rgba(255,255,255,0.5);
+			}
+			.th {
+				text-decoration: underline;
+			}
+			
 		</style>
 	</head>
 	<body>
@@ -147,9 +161,31 @@
 		<div id="main">
 			Io, Europa, Ganymede & Callisto<br>
 			<input type="text" id="ut"></input> Day - default = 0<br>
-			<input type="text" id="uts"></input> Time Scale - default = 0.0000005<br>
+			<input type="text" id="uts"></input> Time Scale - default = 5<br>
 			<button onclick="set()">set</button> 
+			<span id="CurrentTime"></span><br><br>
 			
+			<div class="t">
+				<span class="th">Name</span><br>
+				Io<br>
+				Europa<br>
+				Ganymede<br>
+				Callisto
+			</div>
+			<div class="tn">
+				<span class="th">Orbital Period (d)</span><br>
+				1.769<br>
+				3.551<br>
+				7.155<br>
+				16.69
+			</div>
+			<div class="tn">
+				<span class="th">semi-major axis (km)</span><br>
+				421,800<br>
+				671,100<br>
+				1,070,400<br>
+				1,882,700
+			</div>
 		</div>
 		
 	</body>

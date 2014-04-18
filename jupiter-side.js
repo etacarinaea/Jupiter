@@ -1,30 +1,31 @@
+// Friday, 18/04/2014
 // uJupiter, R, T, S from wikipedia.org
 
 // global vars
-var t = 0;							// day
+var t = parseFloat(localStorage.getItem("t"))/60/1.769;
 
-var Xo = 225;						// global X-Offset
-var Yo = 225;						// global Y-Offset
+var Xo = 225;												// global X-Offset
+var Yo = 225;												// global Y-Offset
 
-var vs = 0.00011;					// scaling factor
-var ts = 0.0000005;				// time scale // unit?
+var vs = 0.00000011;										// scaling factor
+var ts = parseFloat(localStorage.getItem("ts"))/100000;	// time scale // unit?
 
-var uJupiter = 126686534;			// Jupiter's standard gravitational parameter
+var uJupiter = 126686534;									// Jupiter's standard gravitational parameter
 
 
 
 // specific vars
-var T = new Array(		// orbital period in days
-1.769,					// Io
-3.551,					// Europa
-7.155,					// Ganymede
-16.69					// Callisto
+var T = new Array(		// orbital period in seconds
+152841.6,				// Io
+306806.4,				// Europa
+618192,					// Ganymede
+1442016					// Callisto
 );
-var R = new Array(		// orbit "radius"(=semi-major axis) in km
-421800,					// Io
-671100,					// Europa
-1070400,				// Ganymede
-1882700					// Callisto
+var R = new Array(		// orbit "radius"(=semi-major axis) in m
+421800000,				// Io
+671100000,				// Europa
+1070400000,				// Ganymede
+1882700000				// Callisto
 );
 var S = new Array(		// mean diameter in km >>>not in use >>>for real size relations
 3643.2,					// Io mean
