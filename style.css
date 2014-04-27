@@ -1,0 +1,120 @@
+#Jupiter {
+	position: absolute;
+	left: 400px;
+	top: 175px;
+	
+	height: 30px;
+	width: 30px;
+	
+	border-radius: 15px;
+	
+	background-color: rgba(153,128,108,0.7);
+}
+
+#IoDIV {
+	position: absolute;
+	left: 400px;
+	top: 200px;
+	
+	height: 4px;
+	width: 4px;
+	
+	border-radius: 2px;
+	
+	background-color: #000000;
+}
+#IoName {
+	position: relative;
+	left: 6px;
+	top: 3px;
+}
+
+#EuropaDIV {
+	position: absolute;
+	left: 400px;
+	top: 200px;
+	
+	height: 2px;
+	width: 2px;
+	
+	border-radius: 1px;
+	
+	background-color: #000000;
+}
+#EuropaName {
+	position: relative;
+	left: 6px;
+	top: 3px;
+}
+
+#GanymedeDIV {
+	position: absolute;
+	left: 400px;
+	top: 200px;
+	
+	height: 8px;
+	width: 8px;
+	
+	border-radius: 4px;
+	
+	background-color: #000000;
+}
+#GanymedeName {
+	position: relative;
+	left: 6px;
+	top: 3px;
+}
+
+#CallistoDIV {
+	position: absolute;
+	left: 400px;
+	top: 200px;
+	
+	height: 6px;
+	width: 6px;
+	
+	border-radius: 3px;
+	
+	background-color: #000000;
+}
+#CallistoName {
+	position: relative;
+	left: 6px;
+	top: 3px;
+}
+
+
+body {
+	background-color: #FFFFFF;
+	
+	color: #000000;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 11;
+}
+
+#main {
+	position: absolute;
+	top: 450px;
+	left: 0;
+	
+	font-family: 'Arial', sans-serif;
+	font-size: 16;
+	
+	width: 100%;
+	
+	background-color: rgba(0,0,0,0.2);
+}
+.t {
+	padding: 5px;
+	display: inline-block;
+	background-color: rgba(255,255,255,0.5);
+}
+.tn {
+	text-align: center;
+	padding: 5px;
+	display: inline-block;
+	background-color: rgba(255,255,255,0.5);
+}
+.th {
+	text-decoration: underline;
+}
