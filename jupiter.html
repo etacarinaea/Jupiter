@@ -1,27 +1,35 @@
 <html>
 	<head>
 		<title>Jupiter</title>
-		<!--- Thursday, 17/04/2014 --->
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="style.css" />
-		<script src="jupiter-top.js"></script>
+		<script src="sim.js"></script>
 		<script src="set.js"></script>
 	</head>
 	<body>
+		<!--- planets/satelites --->
 		<div id="Jupiter"></div>
-		
 		<div id="IoDIV"><span id="IoName">Io</span></div>
 		<div id="EuropaDIV"><span id="EuropaName">Europa</span></div>
 		<div id="GanymedeDIV"><span id="GanymedeName">Ganymede</span></div>
 		<div id="CallistoDIV"><span id="CallistoName">Callisto</span></div>
+		<div id="ThemistoDIV"><span id="ThemistoName">Themisto</span></div>
 		
+		<!--- other --->
+		<div id="ref"></div>
+		
+		<!--- UI --->
+		<div id="header">
+			Jupiter I, II, III, IV, XVIII(exp)
+		</div>
 		
 		<div id="main">
-			Io, Europa, Ganymede & Callisto<br>
+			The four biggest moons of Jupiter.<br><br>
 			<input type="text" id="ut"></input> Day - default = 0<br>
 			<input type="text" id="uts"></input> Time Scale - default = 5<br>
+			<input type="text" id="uvs"></input> Visual Scale - 2 || 10<br>
+			<input type="text" id="umode"></input> Observer Position - plane of reference(1= top | 2= side)| 3= Earth - default = 1<br>
 			<button onclick="set()">set</button> 
-			<span id="CurrentTime"></span><br><br>
+			<span id="CurrentTime"></span><br><br><br>
 			
 			<div class="t">
 				<span class="th">Name</span><br>
@@ -29,6 +37,13 @@
 				Europa<br>
 				Ganymede<br>
 				Callisto
+			</div>
+			<div class="tn">
+				<span class="th">radius (km)</span><br>
+				1821.3<br>
+				1565<br>
+				2634<br>
+				2403<br>
 			</div>
 			<div class="tn">
 				<span class="th">Orbital Period (d)</span><br>
@@ -44,11 +59,14 @@
 				1,070,042.8<br>
 				1,883,000.0
 			</div>
+			<div class="tn">
+				<span class="th">inclination (deg)</span><br>
+				0.036<br>
+				0.464<br>
+				0.186<br>
+				0.281
+			</div>
 		</div>
 		
 	</body>
 </html>
-
-
-
-
