@@ -62,6 +62,13 @@ var S = new Array(          // radius in km >>>not in use >>>for real size relat
 2403,                       // JIV      Callisto    +- 5
 71492                       // Jupiter              +- 4
 );
+var Sa = new Array(         // apparent size (Earth)
+0,                          // JI       Io
+0,                          // JII      Europa
+0,                          // JIII     Ganymede
+0,                          // JIV      Callisto
+0                           // Jupiter
+);
 
 
 // scaled
@@ -135,7 +142,7 @@ window.onload =function(){
         document.getElementById("ThemistoDIV").style.left = Xo -1 + XThemisto*vs + "px";                                            // set "left"-value for Themisto
         document.getElementById("ThemistoDIV").style.top = Yo -1 + (YThemisto+(YThemisto*(I[4]/90)-YThemisto)*mod2)*vs + "px";      // set "top"-value for Themisto
         
-        document.getElementById("CurrentTime").innerHTML = "Day " + Math.round((t*60*1.769)*100/10000000)/100;                      // display current time
+        document.getElementById("CurrentTime").innerHTML = "Day " + Math.round((t*60*1.769)*100/10000000)/100;                      // display current time (in days)
     }, 10);
     
     // static objects

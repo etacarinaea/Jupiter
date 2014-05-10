@@ -1,12 +1,14 @@
+<!DOCTYPE html> 
 <html>
 	<head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
 		<title>Jupiter</title>
-		<link rel="stylesheet" type="text/css" href="style.css" />
-		<script src="sim.js"></script>
-		<script src="set.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script src="sim.js" type="text/javascript"></script>
+		<script src="set.js" type="text/javascript"></script>
 	</head>
 	<body>
-		<!--- planets/satelites --->
+		<!-- planets/satellites -->
 		<div id="Jupiter"></div>
 		<div id="IoDIV"><span id="IoName">Io</span></div>
 		<div id="EuropaDIV"><span id="EuropaName">Europa</span></div>
@@ -14,23 +16,32 @@
 		<div id="CallistoDIV"><span id="CallistoName">Callisto</span></div>
 		<div id="ThemistoDIV"><span id="ThemistoName">Themisto</span></div>
 		
-		<!--- other --->
+		<!-- other -->
 		<div id="ref"></div>
 		
-		<!--- UI --->
+		<!-- UI -->
 		<div id="header">
-			Jupiter I, II, III, IV, XVIII(exp)
+			Jupiter I, II, III, IV, (XVIII)
 		</div>
 		
 		<div id="main">
-			The four biggest moons of Jupiter.<br><br>
-			<input type="text" id="ut"></input> Day - default = 0<br>
-			<input type="text" id="uts"></input> Time Scale - default = 5<br>
-			<input type="text" id="uvs"></input> Visual Scale - 2 || 10<br>
-			<input type="text" id="umode"></input> Observer Position - plane of reference(1= top | 2= side)| 3= Earth - default = 1<br>
-			<button onclick="set()">set</button> 
-			<span id="CurrentTime"></span><br><br><br>
-			
+            <div class="in">
+                <input type="text" id="ut"><br>
+                <input type="text" id="uts"><br>
+                <input type="text" id="uvs"><br>
+                <input type="text" id="umode"><br>
+                <button onclick="set()">set</button>
+            </div>
+            <div class="in">
+                Day - default = 0<br>
+                Time Scale - default = 5<br>
+                Visual Scale - 2 || 10<br>
+                Observer Position - plane of reference(1= top | 2= side)| 3= Earth - default = 1<br>
+                <span id="CurrentTime"></span>
+			</div>
+            
+            <br>
+            
 			<div class="t">
 				<span class="th">Name</span><br>
 				Io<br>
@@ -66,7 +77,12 @@
 				0.186<br>
 				0.281
 			</div>
+            
+            <br>
+            
+            <p>
+                Themisto (JXVIII) is only in there to test the correct implementation of inclination, and does not represent Themisto's real orbit.
+            <p>
 		</div>
-		
 	</body>
 </html>
