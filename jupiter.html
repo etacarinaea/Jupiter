@@ -1,34 +1,37 @@
 <!DOCTYPE html> 
 <html>
-	<head>
+    <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-		<title>Jupiter</title>
-		<link rel="stylesheet" type="text/css" href="style.css">
-		<script src="sim.js" type="text/javascript"></script>
-		<script src="set.js" type="text/javascript"></script>
-	</head>
-	<body>
-		<!-- planets/satellites -->
-		<div id="Jupiter"></div>
-		<div id="IoDIV"><span id="IoName">Io</span></div>
-		<div id="EuropaDIV"><span id="EuropaName">Europa</span></div>
-		<div id="GanymedeDIV"><span id="GanymedeName">Ganymede</span></div>
-		<div id="CallistoDIV"><span id="CallistoName">Callisto</span></div>
-		<div id="ThemistoDIV"><span id="ThemistoName">Themisto</span></div>
-		
-		<!-- other -->
-		<div id="ref"></div>
-		
-		<!-- UI -->
-		<div id="header">
-			Jupiter I, II, III, IV, (XVIII)
-		</div>
-		
-		<div id="main">
+        <title>Jupiter</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="sim.js" type="text/javascript"></script>
+        <script src="set.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <!-- planets/satellites -->
+        <div id="Jupiter"></div>
+        <span id="satellites">
+            <div id="IoDIV"><span id="IoName">Io</span></div>
+            <div id="EuropaDIV"><span id="EuropaName">Europa</span></div>
+            <div id="GanymedeDIV"><span id="GanymedeName">Ganymede</span></div>
+            <div id="CallistoDIV"><span id="CallistoName">Callisto</span></div>
+            <div id="ThemistoDIV"><span id="ThemistoName">Themisto</span></div>
+        </span>
+        
+        <!-- other -->
+        <div id="ref"></div>
+        
+        <!-- UI -->
+        <div id="header">
+            Jupiter I, II, III, IV, (XVIII)
+        </div>
+        
+        <div id="main">
             <div class="in">
                 <input type="text" id="ut"><br>
                 <input type="text" id="uts"><br>
                 <input type="text" id="uvs"><br>
+                <input type="text" id="urot"><br>
                 <input type="text" id="umode"><br>
                 <button onclick="set()">set</button>
             </div>
@@ -36,53 +39,63 @@
                 Day - default = 0<br>
                 Time Scale - default = 5<br>
                 Visual Scale - 2 || 10<br>
+                Rotation - default = 0<br>
                 Observer Position - plane of reference(1= top | 2= side)| 3= Earth - default = 1<br>
                 <span id="CurrentTime"></span>
-			</div>
+            </div>
             
             <br>
             
-			<div class="t">
-				<span class="th">Name</span><br>
-				Io<br>
-				Europa<br>
-				Ganymede<br>
-				Callisto
-			</div>
-			<div class="tn">
-				<span class="th">radius (km)</span><br>
-				1821.3<br>
-				1565<br>
-				2634<br>
-				2403<br>
-			</div>
-			<div class="tn">
-				<span class="th">Orbital Period (d)</span><br>
-				1.769138<br>
-				3.551810<br>
-				7.154553<br>
-				16.689018
-			</div>
-			<div class="tn">
-				<span class="th">semi-major axis (km)</span><br>
-				421,769.0<br>
-				671,079.0<br>
-				1,070,042.8<br>
-				1,883,000.0
-			</div>
-			<div class="tn">
-				<span class="th">inclination (deg)</span><br>
-				0.036<br>
-				0.464<br>
-				0.186<br>
-				0.281
-			</div>
+            <div class="t">
+                <span class="th">Name</span><br>
+                Io<br>
+                Europa<br>
+                Ganymede<br>
+                Callisto
+            </div>
+            <div class="tn">
+                <span class="th">radius (km)</span><br>
+                1821.3<br>
+                1565<br>
+                2634<br>
+                2403<br>
+            </div>
+            <div class="tn">
+                <span class="th">Orbital Period (d)</span><br>
+                1.769138<br>
+                3.551810<br>
+                7.154553<br>
+                16.689018
+            </div>
+            <div class="tn">
+                <span class="th">semi-major axis (km)</span><br>
+                421,769.0<br>
+                671,079.0<br>
+                1,070,042.8<br>
+                1,883,000.0
+            </div>
+            <div class="tn">
+                <span class="th">inclination (deg)</span><br>
+                0.036<br>
+                0.464<br>
+                0.186<br>
+                0.281
+            </div>
+            <br>
+            <div class="tn">
+                <span class="th">%%%</span><br>
+                <meter value="0" id="MeterIo">Io</meter><br>
+                <meter value="0" id="MeterEuropa">Europa</meter><br>
+                <meter value="0" id="MeterGanymede">Ganymede</meter><br>
+                <meter value="0" id="MeterCallisto">Callisto</meter><br>
+                <meter value="0" id="MeterThemisto">Themisto</meter>
+            </div>
             
             <br>
             
             <p>
-                Themisto (JXVIII) is only in there to test the correct implementation of inclination, and does not represent Themisto's real orbit.
+                This is an attempt to simulate the movement of the Galilean moons. Values calculated are approximations and values used might be wrong or inaccurate.
             <p>
-		</div>
-	</body>
+        </div>
+    </body>
 </html>

@@ -5,7 +5,7 @@
 	
 	border-radius: 10px;
 	
-	background-color: #99806c;
+	background-color: #aaa;
 }
 #IoDIV {
 	position: absolute;
@@ -13,7 +13,7 @@
 	width: 4px;
 	
 	border-radius: 2px;
-	background-color: #000;
+	background-color: #333;
 }
 #EuropaDIV {
 	position: absolute;
@@ -21,7 +21,7 @@
 	width: 2px;
 	
 	border-radius: 1px;
-	background-color: #000;
+	background-color: #333;
 }
 #GanymedeDIV {
 	position: absolute;
@@ -29,7 +29,7 @@
 	width: 8px;
 	
 	border-radius: 4px;
-	background-color: #000;
+	background-color: #333;
 }
 #CallistoDIV {
 	position: absolute;
@@ -37,7 +37,7 @@
 	width: 6px;
 	
 	border-radius: 3px;
-	background-color: #000;
+	background-color: #333;
 }
 #ThemistoDIV {
 	position: absolute;
@@ -45,7 +45,7 @@
 	width: 2px;
 	
 	border-radius: 1px;
-	background-color: #000;
+	background-color: #333;
 }
 #IoName,
 #EuropaName,
@@ -67,6 +67,18 @@
 
 
 
+#IoOrbit,
+#EuropaOrbit,
+#GanymedeOrbit,
+#CallistoOrbit,
+#ThemistoOrbit {
+    fill:#f1f1f1;
+    stroke:#f00;
+    stroke-width:1;
+}
+
+
+
 /*** UI ***/
 
 
@@ -74,7 +86,7 @@
 body {
 	background-color: #f1f1f1;
 	
-	color: #000;
+	color: #333;
 	font-family: 'Arial', sans-serif;
 	font-size: 17px;
 }
@@ -121,7 +133,7 @@ button {
     color: #7f7f7f;
 	background-color: #f1f1f1;
 	border: 0;
-    box-shadow: -3px 0 #CC2650;
+    box-shadow: -3px 0 #C38393;
 }
 #main .in {
     display: inline-block;
@@ -138,7 +150,7 @@ button {
 	background-color: #f1f1f1;
 }
 .t {
-    border-left: solid 3px #CC2650;
+    border-left: solid 3px #C38393;
 }
 .tn {
 	text-align: center;
