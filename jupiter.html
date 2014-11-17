@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
         <title>Jupiter</title>
         <link rel="stylesheet" type="text/css" href="style.css">
-        <script src="sim.js" type="text/javascript"></script>
+        <script src="main.js" type="text/javascript"></script>
         <script src="set.js" type="text/javascript"></script>
     </head>
     <body>
@@ -28,21 +28,18 @@
         
         <div id="main">
             <div class="in">
-                <input type="text" id="ut"><br>
-                <input type="text" id="uts"><br>
-                <input type="text" id="uvs"><br>
-                <input type="text" id="urot"><br>
-                <input type="text" id="umode"><br>
+                <input type="text" id="ut" placeholder="day (0)"><br>
+                <input type="text" id="uts" placeholder="time scale (5)"><br>
+                <input type="text" id="uvs" placeholder="visual scale (7)"><br>
+                <input type="text" id="urot" placeholder="rotation (0)"><br>
+                <select id="umode">
+                    <option value="1">top</option>
+                    <option value="2">side</option>
+                    <option value="3">Earth</option>
+                </select><br>
                 <button onclick="set()">set</button>
             </div>
-            <div class="in">
-                Day - default = 0<br>
-                Time Scale - default = 5<br>
-                Visual Scale - 2 || 10<br>
-                Rotation - default = 0<br>
-                Observer Position - plane of reference(1= top | 2= side)| 3= Earth - default = 1<br>
-                <span id="CurrentTime"></span>
-            </div>
+            <span id="CurrentTime"></span>
             
             <br>
             
@@ -92,10 +89,12 @@
             </div>
             
             <br>
-            
+            <p>
+                time scale in hours per second
+            </p>
             <p>
                 This is an attempt to simulate the movement of the Galilean moons. Values calculated are approximations and values used might be wrong or inaccurate.
-            <p>
+            </p>
         </div>
     </body>
 </html>
