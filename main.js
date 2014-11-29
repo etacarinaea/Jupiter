@@ -151,7 +151,6 @@ function main(){
 		element = document.getElementById(sat_names[i]+"DIV");
 		style = window.getComputedStyle(element);
 		csssize[i] = style.getPropertyValue("height").replace("px","");
-		console.log(csssize[i]);
 	}
 
 	setInterval( function update(){
