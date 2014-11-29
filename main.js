@@ -2,17 +2,7 @@
 // Jupiter's standard gravitational parameter
 var uJupiter = 126686511;
 
-// time
-var t = parseFloat(localStorage.getItem("t"));
-// time step
-var ts = parseFloat(localStorage.getItem("ts"));
-
-// visual scaling factor
-var vs = parseFloat(localStorage.getItem("vs"));
-
-// rotation (user set)
-var rot = parseFloat(localStorage.getItem("rot"));
-
+var t, vs, ts, rot;
 
 // 
 var def = 0;
@@ -59,6 +49,11 @@ var semimajoraxis = [
 		1883000,
 		7393216
 ];
+
+// display size of 
+var csssize = [];
+
+
 var xPos = [sat_names.length];
 var yPos = [sat_names.length];
 for(var i=0; i<sat_names.length; i++){
@@ -67,7 +62,7 @@ for(var i=0; i<sat_names.length; i++){
 }
 
 // offset
-var Xo = 225;
+var Xo = 300;
 var Yo = 275;
 
 
@@ -122,6 +117,12 @@ function transformRotation(x, y, angle, axis){
 
 
 
+function setto(){
+	t = document.getElementById("ut").value*24*60*60;
+	ts = document.getElementById("uts").value*60*60/100;
+	vs = document.getElementById("uvs").value/100000;
+	rot = document.getElementById("urot").value;
+}
 
 
 window.onload =
@@ -135,16 +136,23 @@ function main(){
 			case 40: def -= 0.05; break;
 			case 37: rot += 1; break;
 			case 39: rot -= 1; break;
-			case 13: ; break;
+			case 13: setto(); break;
+			case 45: def = Math.PI/2; break;
 		}
 
-		if([37,38,39,40].indexOf(key) > -1){
+		if([13,37,38,39,40,45].indexOf(key) > -1){
 			e.preventDefault();
 		}
 	});
 
 	// all satellites grouped in a DOM element
 	var satgroup = document.getElementById("satellites");
+	for(var i=0; i<sat_names.length; i++){
+		element = document.getElementById(sat_names[i]+"DIV");
+		style = window.getComputedStyle(element);
+		csssize[i] = style.getPropertyValue("height").replace("px","");
+		console.log(csssize[i]);
+	}
 
 	setInterval( function update(){
 		for (var i=0; i< sat_names.length; i++){
@@ -155,8 +163,17 @@ function main(){
 			satgroup.children[i].style.left = Xo +
 				transformRotation(xPos[i], yPos[i], rot, 0) *vs + "px";
 			satgroup.children[i].style.top  = Yo +
-				transformRotation(xPos[i], yPos[i], rot, 1) *vs + "px";
+				transformRotation(xPos[i], yPos[i], rot, 1) *vs -csssize[i]/2 + "px";
 			if(sat_names[i]=="Themisto"){rot = rot-47.48}
+
+
+			// doing this so it's easier to handle what's in the background
+			if(def >= Math.PI){
+				def = Math.PI;
+			}else if(def <= 0){
+				def = 0;
+			}
+
 
 			// change z-index of objects in the "background"
 			b = (t % period[i])/period[i];
@@ -169,14 +186,17 @@ function main(){
 			}
 			
 			// change opacity of objects in the "background"
-			a = 0.5*Math.sin(t*(2*Math.PI)/period[i])+0.7;
+			a = 0.5*Math.sin(t*(2*Math.PI)/period[i])+0.65;
 			satgroup.children[i].style.opacity = a+0.5*Math.cos(2*def)+0.5;
 		}
 		
+		document.getElementById("CurrentTime").innerHTML = "Day " + Math.round(t/24/60/60*100)/100;
+
 		// next time step
 		t += ts;
-	}, 10)
-	
+	}, 10);
+
+
 	// static
 	document.getElementById("Jupiter").style.left = Xo -10 +"px";
 	document.getElementById("Jupiter").style.top = Yo -10 +"px";
