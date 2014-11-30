@@ -72,9 +72,9 @@
 #GanymedeOrbit,
 #CallistoOrbit,
 #ThemistoOrbit {
-    fill:#f1f1f1;
-    stroke:#f00;
-    stroke-width:1;
+	fill:#f1f1f1;
+	stroke:#f00;
+	stroke-width:1;
 }
 
 
@@ -129,38 +129,38 @@ button {
 	margin: 0px 20px 2px 3px;
 	text-align: center;
 	width: 110px;
-    height: 18px;
-    color: #7f7f7f;
+	height: 18px;
+	color: #7f7f7f;
 	background-color: #f1f1f1;
 	border: 0;
-    box-shadow: -3px 0 #C38393;
+	box-shadow: -3px 0 #C38393;
 }
 select {
 	margin: 0 20px 0 3px;
 	text-align: center;
 	width: 123px;
-    height: 18px;
-    color: #7f7f7f;
+	height: 18px;
+	color: #7f7f7f;
 	background-color: #f1f1f1;
 	border: 0;
-    box-shadow: -3px 0 #C38393;
+	box-shadow: -3px 0 #C38393;
 }
 #main .in {
-    display: inline-block;
+	display: inline-block;
 }
 #main >:nth-child(2) {
-    line-height:21.5px;
+	line-height:21.5px;
 }
 
 .t,
 .tn {
-    margin-top: 20px;
+	margin-top: 20px;
 	padding: 5px;
 	display: inline-block;
 	background-color: #f1f1f1;
 }
 .t {
-    border-left: solid 3px #C38393;
+	border-left: solid 3px #C38393;
 }
 .tn {
 	text-align: center;

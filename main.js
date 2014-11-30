@@ -10,16 +10,16 @@ var def = 0;
 
 
 if(!t){
-	    t = 0;
+		t = 0;
 }
 if(!vs){
-	    vs = 0.00000007;
+		vs = 0.00000007;
 }
 if(!ts && ts!=0){
-	    ts = 500;
+		ts = 500;
 }
 if(!rot){
-	    rot = 0;
+		rot = 0;
 }
 
 
@@ -50,7 +50,7 @@ var semimajoraxis = [
 		7393216
 ];
 
-// display size of 
+// display size of sat
 var csssize = [];
 
 
