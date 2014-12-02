@@ -200,7 +200,8 @@ function main(){
 				*Math.cos(def);
 			if(sat_names[i]=="Themisto"){rot = rot+47.48}
 			satgroup.children[i].style.left = Xo +
-				transformRotation(xPos[i], yPos[i], rot, 0) *vs + "px";
+				transformRotation(xPos[i], yPos[i], rot, 0) *vs -
+				cssszie[i]/2 + "px";
 			satgroup.children[i].style.top  = Yo +
 				transformRotation(xPos[i], yPos[i], rot, 1) *vs -
 				csssize[i]/2 + "px";
