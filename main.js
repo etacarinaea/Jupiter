@@ -2,26 +2,11 @@
 // Jupiter's standard gravitational parameter
 var uJupiter = 126686511;
 
-var t, vs, ts, rot;
-
-// 
-var def = 0;
-
-
-
-if(!t){
-		t = 0;
-}
-if(!vs){
-		vs = 0.00000007;
-}
-if(!ts && ts!=0){
-		ts = 500;
-}
-if(!rot){
-		rot = 0;
-}
-
+var t=0, tzer, vs=0.00007, ts=180, rot=0, def = 0;
+var mouse = {
+	x: 0,
+	y: 0
+};
 
 
 // array [ JI, JII, JIII, JIV, JXVIII ]
@@ -50,7 +35,7 @@ var semimajoraxis = [
 		7393216
 ];
 
-// display size of sat
+// display size of sats
 var csssize = [];
 
 
@@ -84,6 +69,24 @@ function table(){
 }
 
 
+/* check whether input variables are undefined
+ */
+function checkIfInUndef(){
+	if(!t){
+		t = tzer;
+	}
+	if(!vs){
+		vs = 0.00007;
+	}
+	if(!ts){
+		ts = 5;
+	}
+	if(!rot){
+		rot = 0;
+	}
+}
+
+
 /* returns orbital period (s); A: semi-major axis (km),
  * u: standard gravitational parameter
 
@@ -95,7 +98,7 @@ function calculateOrbitalPeriod (A, u) {
  */
 
 
-/* returns x or y position (m); A: semi-major axis (m),
+/* return x or y position (m); A: semi-major axis (m),
  * T: orbital period (s), axis: axis to return: 0 for x, else y
  */
 function calculatePosition (A, T, axis) {
@@ -107,11 +110,11 @@ function calculatePosition (A, T, axis) {
 }
 
 
-/* returns x or y position (m) after transformation; x: x-position;
+/* return x or y position (m) after transformation; x: x-position;
  * y: y-position; angle: by what angle to rotate (deg);
  * axis: axis to return: 0 for x, else y
  */
-function transformRotation(x, y, angle, axis){
+function transformRotation (x, y, angle, axis) {
 	var t_rot= new Array(2);
 	for (i=0; i<3; i++){
 		t_rot[i] = new Array(2);
@@ -133,13 +136,19 @@ function transformRotation(x, y, angle, axis){
 }
 
 
-
+/* get user input, convert them to usable units and assign them to variables
+ */
 function setto(){
+	tzer = t;
 	t = document.getElementById("ut").value*24*60*60;
-	ts = document.getElementById("uts").value*60*60/100;
+	ts = document.getElementById("uts").value;
 	vs = document.getElementById("uvs").value/100000;
 	rot = document.getElementById("urot").value;
+	checkIfInUndef();
+	ts = ts*60*60/100;
 }
+
+
 
 
 window.onload =
@@ -162,6 +171,18 @@ function main(){
 			e.preventDefault();
 		}
 	});
+	
+	// get the mouse position
+	document.addEventListener("mousemove", function(e){
+		mouse.x = e.pageX;
+		mouse.y = e.pageY;
+	});
+	document.getElementById("mouseboundary").addEventListener("click",
+			function(){
+				Xo = mouse.x;
+				Yo = mouse.y;
+			}
+	);
 
 	// all satellites grouped in a DOM element
 	var satgroup = document.getElementById("satellites");
@@ -171,8 +192,9 @@ function main(){
 		csssize[i] = style.getPropertyValue("height").replace("px","");
 	}
 
-	setInterval( function update(){
-		for (var i=0; i< sat_names.length; i++){
+	// calculate position and update
+	setInterval( function (){
+		for(var i=0; i< sat_names.length; i++){
 			xPos[i] = calculatePosition(semimajoraxis[i], period[i], 0);
 			yPos[i] = calculatePosition(semimajoraxis[i], period[i], 1)
 				*Math.cos(def);
@@ -180,11 +202,16 @@ function main(){
 			satgroup.children[i].style.left = Xo +
 				transformRotation(xPos[i], yPos[i], rot, 0) *vs + "px";
 			satgroup.children[i].style.top  = Yo +
-				transformRotation(xPos[i], yPos[i], rot, 1) *vs -csssize[i]/2 + "px";
+				transformRotation(xPos[i], yPos[i], rot, 1) *vs -
+				csssize[i]/2 + "px";
 			if(sat_names[i]=="Themisto"){rot = rot-47.48}
 
+			document.getElementById("Jupiter").style.left = Xo -10 +"px";
+			document.getElementById("Jupiter").style.top = Yo -10 +"px";
+			document.getElementById("ref").style.top = Yo -1 +"px";
 
-			// doing this so it's easier to handle what's in the background
+			/* limit max rotation, doing this so it's easier to handle
+			   what's in the background */
 			if(def >= Math.PI){
 				def = Math.PI;
 			}else if(def <= 0){
@@ -207,16 +234,13 @@ function main(){
 			satgroup.children[i].style.opacity = a+0.5*Math.cos(2*def)+0.5;
 		}
 		
-		document.getElementById("CurrentTime").innerHTML = "Day " + Math.round(t/24/60/60*100)/100;
+		document.getElementById("CurrentTime").innerHTML = "Day " + 
+			Math.round(t/24/60/60*100)/100;
 
 		// next time step
 		t += ts;
 	}, 10);
 
 
-	// static
-	document.getElementById("Jupiter").style.left = Xo -10 +"px";
-	document.getElementById("Jupiter").style.top = Yo -10 +"px";
-	
-	document.getElementById("ref").style.top = Yo -1 +"px";
+	// static	
 }
