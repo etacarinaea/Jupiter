@@ -67,6 +67,23 @@ var Yo = 275;
 
 
 
+/* create an HTML table and fill it with the values from sat_names, period
+ * and semimajoraxis
+ */
+function table(){
+	var td = "</td><td>";
+	var table = "<table><tr><td>Name</td><td>Orbital Period (d)</td>"+
+		"<td>Semi-Major Axis (km)</td></tr>";
+	for(var i=0; i<sat_names.length; i++){
+		table += "<tr><td>" + sat_names[i] + td +
+			Math.round(period[i]/60/60/24*1000)/1000 + td +
+		semimajoraxis[i] + "</td></tr>";
+	}
+	table += "</table>";
+	document.getElementById("tablediv").innerHTML = table;
+}
+
+
 /* returns orbital period (s); A: semi-major axis (km),
  * u: standard gravitational parameter
 
@@ -127,8 +144,9 @@ function setto(){
 
 window.onload =
 function main(){
-
-	document.addEventListener("keypress", function moveViewport(e){
+	table();
+	// move viewport
+	document.addEventListener("keypress", function (e){
 		var key = e.keyCode;
 
 		switch(key){
