@@ -1,3 +1,6 @@
+/* Orbital period, semi-major axis and Jupiter's standard gravitational
+ * parameter from http://ssd.jpl.nasa.gov/horizons.cgi (except for Themisto)
+ */
 
 // Jupiter's standard gravitational parameter
 var uJupiter = 126686511;
@@ -7,7 +10,6 @@ var mouse = {
 	x: 0,
 	y: 0
 };
-
 
 // array [ JI, JII, JIII, JIV, JXVIII ]
 // satellite names
@@ -52,20 +54,17 @@ var Yo = 275;
 
 
 
-/* create an HTML table and fill it with the values from sat_names, period
- * and semimajoraxis
+
+/* get user input, convert them to usable units and assign them to variables
  */
-function table(){
-	var td = "</td><td>";
-	var table = "<table><tr><td>Name</td><td>Orbital Period (d)</td>"+
-		"<td>Semi-Major Axis (km)</td></tr>";
-	for(var i=0; i<sat_names.length; i++){
-		table += "<tr><td>" + sat_names[i] + td +
-			Math.round(period[i]/60/60/24*1000)/1000 + td +
-		semimajoraxis[i] + "</td></tr>";
-	}
-	table += "</table>";
-	document.getElementById("tablediv").innerHTML = table;
+function set(){
+	tzer = t;
+	t = document.getElementById("ut").value*24*60*60;
+	ts = document.getElementById("uts").value;
+	vs = document.getElementById("uvs").value/100000;
+	rot = document.getElementById("urot").value;
+	checkIfInUndef();
+	ts = ts*60*60/100;
 }
 
 
@@ -89,13 +88,28 @@ function checkIfInUndef(){
 
 /* returns orbital period (s); A: semi-major axis (km),
  * u: standard gravitational parameter
-
 function calculateOrbitalPeriod (A, u) {
 	return 2*Math.PI*Math.sqrt(Math.pow(A,3)/u);
 }
-
  * currently using values from 'period'-array instead
  */
+
+
+/* create an HTML table and fill it with the values from sat_names, period
+ * and semimajoraxis
+ */
+function table(){
+	var td = "</td><td>";
+	var table = "<table><tr><td>Name</td><td>Orbital Period (d)</td>"+
+		"<td>Semi-Major Axis (km)</td></tr>";
+	for(var i=0; i<sat_names.length; i++){
+		table += "<tr><td>" + sat_names[i] + td +
+			Math.round(period[i]/60/60/24*1000)/1000 + td +
+		semimajoraxis[i] + "</td></tr>";
+	}
+	table += "</table>";
+	document.getElementById("tablediv").innerHTML = table;
+}
 
 
 /* return x or y position (m); A: semi-major axis (m),
@@ -136,38 +150,60 @@ function transformRotation (x, y, angle, axis) {
 }
 
 
-/* get user input, convert them to usable units and assign them to variables
+/* check whether a satellite is in the "background"
+ * change the z-index and if opac==true also change the opacity accordingly
+ * elements: elements to apply the styles to
  */
-function setto(){
-	tzer = t;
-	t = document.getElementById("ut").value*24*60*60;
-	ts = document.getElementById("uts").value;
-	vs = document.getElementById("uvs").value/100000;
-	rot = document.getElementById("urot").value;
-	checkIfInUndef();
-	ts = ts*60*60/100;
-}
+function backgroundHandle (elements, opac, index) {
+	/* limit max rotation; doing this so it's easier to handle
+	 * what's in the background */
+	if(def >= Math.PI){
+		def = Math.PI;
+	}else if(def <= 0){
+		def = 0;
+	}
 
+	// change z-index of objects in the "background"
+	var p = (t % period[index])/period[index];
+
+	if(p >= 0.5){
+		elements.children[index].style.zIndex = -20;
+	}else{
+		elements.children[index].style.zIndex = 20;
+	}
+	
+	// change opacity of objects in the "background"; 0.65=min opacity
+	if(opac){
+		var a = 0.5*Math.sin(t*(2*Math.PI)/period[index])+0.65;
+		elements.children[index].style.opacity = a+0.5*Math.cos(2*def)+0.5;
+	}else{
+		elements.children[index].style.opacity = 1;
+	}
+}
 
 
 
 window.onload =
 function main(){
 	table();
-	// move viewport
+
+	var usrbg=true, usropac=true;
+
 	document.addEventListener("keypress", function (e){
 		var key = e.keyCode;
 
 		switch(key){
+			case 13: set(); break;
 			case 38: def += 0.05; break;
 			case 40: def -= 0.05; break;
 			case 37: rot += 1; break;
 			case 39: rot -= 1; break;
-			case 13: setto(); break;
 			case 45: def = Math.PI/2; break;
+			case 34: if(usropac){usropac=false}else{usropac=true}; break;
+			case 35: if(usrbg){usrbg=false}else{usrbg=true}; break;
 		}
 
-		if([13,37,38,39,40,45].indexOf(key) > -1){
+		if([13,37,38,39,40,45,34,35].indexOf(key) > -1){
 			e.preventDefault();
 		}
 	});
@@ -186,6 +222,7 @@ function main(){
 
 	// all satellites grouped in a DOM element
 	var satgroup = document.getElementById("satellites");
+
 	for(var i=0; i<sat_names.length; i++){
 		element = document.getElementById(sat_names[i]+"DIV");
 		style = window.getComputedStyle(element);
@@ -198,7 +235,9 @@ function main(){
 			xPos[i] = calculatePosition(semimajoraxis[i], period[i], 0);
 			yPos[i] = calculatePosition(semimajoraxis[i], period[i], 1)
 				*Math.cos(def);
+			// if Themisto, add an inclination of 47.48 deg
 			if(sat_names[i]=="Themisto"){rot = rot+47.48}
+			// apply position (with transformation) to elements
 			satgroup.children[i].style.left = Xo +
 				transformRotation(xPos[i], yPos[i], rot, 0) *vs -
 				csssize[i]/2 + "px";
@@ -211,37 +250,18 @@ function main(){
 			document.getElementById("Jupiter").style.top = Yo -10 +"px";
 			document.getElementById("ref").style.top = Yo -1 +"px";
 
-			/* limit max rotation, doing this so it's easier to handle
-			   what's in the background */
-			if(def >= Math.PI){
-				def = Math.PI;
-			}else if(def <= 0){
-				def = 0;
-			}
-
-
-			// change z-index of objects in the "background"
-			b = (t % period[i])/period[i];
-
-			
-			if(b >= 0.5){
-				satgroup.children[i].style.zIndex = "-20";
+			if(usrbg){
+				backgroundHandle(satgroup, usropac, i);
 			}else{
-				satgroup.children[i].style.zIndex = "20";
+				satgroup.children[i].style.zIndex = 20;
+				satgroup.children[i].style.opacity = 1;
 			}
-			
-			// change opacity of objects in the "background"
-			a = 0.5*Math.sin(t*(2*Math.PI)/period[i])+0.65;
-			satgroup.children[i].style.opacity = a+0.5*Math.cos(2*def)+0.5;
 		}
-		
+
 		document.getElementById("CurrentTime").innerHTML = "Day " + 
 			Math.round(t/24/60/60*100)/100;
 
 		// next time step
 		t += ts;
 	}, 10);
-
-
-	// static	
 }
