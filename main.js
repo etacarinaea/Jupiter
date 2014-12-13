@@ -59,12 +59,13 @@ var Yo = 275;
  */
 function set(){
 	tzer = t;
-	t = document.getElementById("ut").value*24*60*60;
+	t = document.getElementById("ut").value;
 	ts = document.getElementById("uts").value;
 	vs = document.getElementById("uvs").value/100000;
 	rot = document.getElementById("urot").value;
 	checkIfInUndef();
 	ts = ts*60*60/100;
+	t = t*24*60*60;
 }
 
 
