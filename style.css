@@ -1,20 +1,3 @@
-.orbb {
-	z-index: 0;
-	position:absolute;
-	border: 1px solid #f00;
-	opacity: 0.1;
-}
-#orbits div:last-child {
-}
-
-#orbits div:nth-last-child(2) {
-	background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
-	background: -o-linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
-	background: -moz-linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
-	background: linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
-}
-
-
 #Jupiter {
 	position: absolute;
 	height: 20px;
@@ -73,6 +56,21 @@
 	left: 7px;
 	top: 4px;
 }
+
+.orbb {
+	z-index: 0;
+	position:absolute;
+	border: 1px solid #f00;
+	opacity: 0.1;
+}
+#orbits div:nth-last-child(2) {
+	background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
+	background: -o-linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
+	background: -moz-linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
+	background: linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
+}
+
+
 #ref{
 	position: absolute;
 	height: 2px;
@@ -129,7 +127,7 @@ header > span {
 	left: 10px;
 }
 
-#main {
+main {
 	z-index: 100;
 	position: absolute;
 	top: 525px;
@@ -158,10 +156,10 @@ input {
 	border: 0;
 	border-left: 3px solid #12589d;
 }
-#main .in {
+main .in {
 	display: inline-block;
 }
-#main >:nth-child(2) {
+main >:nth-child(2) {
 	line-height:21.5px;
 }
 
