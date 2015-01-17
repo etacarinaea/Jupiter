@@ -2,9 +2,6 @@
  * parameter from http://ssd.jpl.nasa.gov/horizons.cgi (except for Themisto)
  */
 
-// Jupiter's standard gravitational parameter
-var uJupiter = 126686511;
-
 var t=0, tzer, vs=0.00007, ts=180, rot=0, def = 0;
 var mouse = {
 	x: 0,
@@ -97,15 +94,6 @@ function checkIfInUndef(){
 		rot = 0;
 	}
 }
-
-
-/* returns orbital period (s); A: semi-major axis (km),
- * u: standard gravitational parameter
-function calculateOrbitalPeriod (A, u) {
-	return 2*Math.PI*Math.sqrt(Math.pow(A,3)/u);
-}
- * currently using values from 'period'-array instead
- */
 
 
 /* create an HTML table and fill it with the values from sat_names, period
