@@ -2,6 +2,7 @@
  */
 
 var t=0, tzer, vs=0.00007, ts=180, rot=0, def = 0;
+var year = 2015, month = 0, day = 17, hour = 0, minute = 0;
 var usrbg=true, usropac=true;
 var mouse = {
 	x: 0,
@@ -169,11 +170,7 @@ function catchInput(){
  * 
  */
 function outputDate (time){
-	var year = 2015,
-		month = 0,
-		day = 17,
-		hour = 0,
-		minute = time/60;
+	minute = time/60;
 	var date = new Date(year,month,day,hour,minute);
 	document.getElementById("CurrentTime").innerHTML = "Day(rel.) " + 
 		Math.round(minute/24/60*100)/100 + "<br> Date(Greg.cal.): " +
