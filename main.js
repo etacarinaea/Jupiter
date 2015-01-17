@@ -36,6 +36,18 @@ var semimajoraxis = [
 		1883000,
 		7393216
 ];
+/* 2015-Jan-17 "SatPANG" is the angle from the North Celestial
+ * Pole measured counter-clockwise (CCW, or east) to a line from primary/planet
+ * center to satellite center.
+ * Units: DEGREES (position angle)
+ */
+var SatPANG = [
+		110.296,
+		111.178,
+		110.685,
+		111.256,
+		0
+];
 
 // display size of sats
 var csssize = [];
@@ -112,15 +124,65 @@ function table(){
 	document.getElementById("tablediv").innerHTML = table;
 }
 
+/* add event listeners for keypress, mousemove and click
+ */
+function catchInput(){
+	document.addEventListener("keypress", function (e){
+		var key = e.keyCode;
+
+		switch(key){
+			case 13: set(); break;
+			case 38: def += 0.02; break;
+			case 40: def -= 0.02; break;
+			case 37: rot += 1; break;
+			case 39: rot -= 1; break;
+			case 45: def = Math.PI/2; break;
+			case 34: if(usropac){usropac=false}else{usropac=true}; break;
+			case 35: if(usrbg){usrbg=false}else{usrbg=true}; break;
+		}
+
+		if([13,37,38,39,40,45,34,35].indexOf(key) > -1){
+			e.preventDefault();
+		}
+	});
+
+	document.addEventListener("mousemove", function(e){
+		mouse.x = e.pageX;
+		mouse.y = e.pageY;
+	});
+	document.getElementById("mouseboundary").addEventListener("click",
+			function(){
+				Xo = mouse.x;
+				Yo = mouse.y;
+			}
+	);
+}
+
+/* output time to HTML
+ * 
+ */
+function outputDate (time){
+	var year = 2015,
+		month = 0,
+		day = 17,
+		hour = 0,
+		minute = time/60;
+	var date = new Date(year,month,day,hour,minute);
+	document.getElementById("CurrentTime").innerHTML = "Day(rel.) " + 
+		Math.round(minute/24/60*100)/100 + "<br> Date(Greg.cal.): " +
+		date;
+}
+
 
 /* return x or y position (m); A: semi-major axis (m),
  * T: orbital period (s), axis: axis to return: 0 for x, else y
  */
-function calculatePosition (A, T, axis) {
+function calculatePosition (A, T, spang, axis) {
+	spang = spang/57.295;
 	if (axis == 0){
-		return A*Math.cos(2*Math.PI*(t/T));
+		return A*Math.cos(2*Math.PI*(t/T)+spang);
 	}else{
-		return A*Math.sin(2*Math.PI*(t/T));
+		return A*Math.sin(2*Math.PI*(t/T)+spang);
 	}
 }
 
@@ -136,7 +198,7 @@ function transformRotation (x, y, angle, axis) {
 	}
 	
 	// deg to rad
-	angle = angle/57.295
+	angle = angle/57.295;
 
 	t_rot[0][0] = Math.cos(angle);
 	t_rot[0][1] = Math.sin(angle);
@@ -175,12 +237,14 @@ function backgroundHandle (elements, opac, index) {
 	
 	// change opacity of objects in the "background"; 0.65=min opacity
 	if(opac){
-		var a = 0.5*Math.sin(t*(2*Math.PI)/period[index])+0.65;
+		var a = 0.5*Math.sin(t*(2*Math.PI)/period[index]+SatPANG[index]/2)+0.65;
 		elements.children[index].style.opacity = a+0.5*Math.cos(2*def)+0.5;
 	}else{
 		elements.children[index].style.opacity = 1;
 	}
 }
+
+
 
 
 
@@ -190,36 +254,7 @@ function main(){
 
 	var usrbg=true, usropac=true;
 
-	document.addEventListener("keypress", function (e){
-		var key = e.keyCode;
-
-		switch(key){
-			case 13: set(); break;
-			case 38: def += 0.05; break;
-			case 40: def -= 0.05; break;
-			case 37: rot += 1; break;
-			case 39: rot -= 1; break;
-			case 45: def = Math.PI/2; break;
-			case 34: if(usropac){usropac=false}else{usropac=true}; break;
-			case 35: if(usrbg){usrbg=false}else{usrbg=true}; break;
-		}
-
-		if([13,37,38,39,40,45,34,35].indexOf(key) > -1){
-			e.preventDefault();
-		}
-	});
-	
-	// get the mouse position
-	document.addEventListener("mousemove", function(e){
-		mouse.x = e.pageX;
-		mouse.y = e.pageY;
-	});
-	document.getElementById("mouseboundary").addEventListener("click",
-			function(){
-				Xo = mouse.x;
-				Yo = mouse.y;
-			}
-	);
+	catchInput();
 
 	// all satellites grouped in a DOM element
 	var satgroup = document.getElementById("satellites");
@@ -233,8 +268,8 @@ function main(){
 	// calculate position and update
 	setInterval( function (){
 		for(var i=0; i< sat_names.length; i++){
-			xPos[i] = calculatePosition(semimajoraxis[i], period[i], 0);
-			yPos[i] = calculatePosition(semimajoraxis[i], period[i], 1)
+			xPos[i] = calculatePosition(semimajoraxis[i], period[i], SatPANG[i], 0);
+			yPos[i] = calculatePosition(semimajoraxis[i], period[i], SatPANG[i], 1)
 				*Math.cos(def);
 			// if Themisto, add an inclination of 47.48 deg
 			if(sat_names[i]=="Themisto"){rot = rot+47.48}
@@ -245,11 +280,45 @@ function main(){
 			satgroup.children[i].style.top  = Yo +
 				transformRotation(xPos[i], yPos[i], rot, 1) *vs -
 				csssize[i]/2 + "px";
+
+			// sat orb minimum bounding box
+			var orbitbbgroup = document.getElementById("orbits");
+
+			orbitbbgroup.children[i].style.height = Math.abs(semimajoraxis[i]*2 *
+				Math.cos(def) *vs) + "px";
+			orbitbbgroup.children[i].style.width = semimajoraxis[i]*2 *vs +
+				"px";
+			orbitbbgroup.children[i].style.left = Xo - semimajoraxis[i]*vs -1 +
+				"px";
+			orbitbbgroup.children[i].style.top = Yo + (-semimajoraxis[i] +
+				(semimajoraxis[i]*2 - Math.abs(semimajoraxis[i]*2*Math.cos(def)))/2)*vs -
+				1 + "px";
+			if(Math.cos(def)<0){var tmprot = rot;rot += 180;}
+			orbitbbgroup.children[i].style.webkitTransform = "rotate(" +
+				-rot + "deg)";
+			orbitbbgroup.children[i].style.MozTransform = "rotate(" +
+				-rot + "deg)";
+			orbitbbgroup.children[i].style.transform = "rotate(" +
+				-rot + "deg)";
+			if(Math.cos(def)<0){rot = tmprot;}
+			orbitbbgroup.children[i].style.borderRadius = Math.abs(semimajoraxis[i]*vs) +
+				"px / " + Math.abs(semimajoraxis[i]*Math.cos(def)*vs) + "px";
+
+
 			if(sat_names[i]=="Themisto"){rot = rot-47.48}
 
-			document.getElementById("Jupiter").style.left = Xo -10 +"px";
-			document.getElementById("Jupiter").style.top = Yo -10 +"px";
-			document.getElementById("ref").style.top = Yo -1 +"px";
+			document.getElementById("Jupiter").style.left = Xo -10 + "px";
+			document.getElementById("Jupiter").style.top = Yo -10 + "px";
+			document.getElementById("ref").style.top = Yo -1 + "px";
+			// innerWidth + (JupiderWiwdth/2 - refHeight)
+			document.getElementById("ref").style.left = Xo -
+				window.innerWidth +8 + "px";
+			document.getElementById("ref").style.webkitTransform = "rotate(" +
+				-rot + "deg)";
+			document.getElementById("ref").style.MozTransform = "rotate(" +
+				-rot + "deg)";
+			document.getElementById("ref").style.transform = "rotate(" +
+				-rot + "deg)";
 
 			if(usrbg){
 				backgroundHandle(satgroup, usropac, i);
@@ -259,8 +328,7 @@ function main(){
 			}
 		}
 
-		document.getElementById("CurrentTime").innerHTML = "Day " + 
-			Math.round(t/24/60/60*100)/100;
+		outputDate(t);
 
 		// next time step
 		t += ts;

@@ -1,3 +1,20 @@
+.orbb {
+	z-index: 0;
+	position:absolute;
+	border: 1px solid #f00;
+	opacity: 0.1;
+}
+#orbits div:last-child {
+}
+
+#orbits div:nth-last-child(2) {
+	background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
+	background: -o-linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
+	background: -moz-linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
+	background: linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
+}
+
+
 #Jupiter {
 	position: absolute;
 	height: 20px;
@@ -58,25 +75,12 @@
 }
 #ref{
 	position: absolute;
-	height: 1px;
-	width: 100%;
+	height: 2px;
+	width: 200%;
 	
 	background-color: #f00;
 	opacity: 0.1;
 }
-
-
-
-#IoOrbit,
-#EuropaOrbit,
-#GanymedeOrbit,
-#CallistoOrbit,
-#ThemistoOrbit {
-	fill:#f1f1f1;
-	stroke:#f00;
-	stroke-width:1;
-}
-
 
 
 #mouseboundary {
@@ -85,7 +89,7 @@
 	left: 0;
 
 	width: 100%;
-	height: 525px;
+	height: 100%;
 }
 
 
@@ -103,28 +107,37 @@ body {
 }
 
 
-#header {
-	position: fixed;
+header {
+	z-index: 100;
+	position: absolute;
 	top: 0;
 	left: 0;
-	height: 50px;
+	height: 60px;
 	width: 100%;
 	
 	font-size: 30px;
 	line-height: 50px;
-	padding-left: 30px;
+	padding: 10px;
 	
+	border-bottom: 2px solid #12589d;
+
 	background-color: #fff;
+}
+header > span {
+	position: relative;
+	top: -10px;
+	left: 10px;
 }
 
 #main {
+	z-index: 100;
 	position: absolute;
 	top: 525px;
 	left: 0;
 	
 	font-family: 'Arial', sans-serif;
 	font-size: 16px;
-	padding: 20px 30px;
+	padding: 20px 20px 0 55px;
 	
 	width: 100%;
 	height: 700px;
@@ -135,26 +148,15 @@ body {
 	
 	background-color: #fff;
 }
-input,
-button {
+input {
 	margin: 0px 20px 2px 3px;
 	text-align: center;
-	width: 110px;
+	width: 120px;
 	height: 18px;
 	color: #7f7f7f;
 	background-color: #f1f1f1;
 	border: 0;
-	box-shadow: -3px 0 #C38393;
-}
-select {
-	margin: 0 20px 0 3px;
-	text-align: center;
-	width: 123px;
-	height: 18px;
-	color: #7f7f7f;
-	background-color: #f1f1f1;
-	border: 0;
-	box-shadow: -3px 0 #C38393;
+	border-left: 3px solid #12589d;
 }
 #main .in {
 	display: inline-block;
@@ -163,19 +165,12 @@ select {
 	line-height:21.5px;
 }
 
-.t,
-.tn {
-	margin-top: 20px;
-	padding: 5px;
-	display: inline-block;
-	background-color: #f1f1f1;
+#tablediv table {
+	background-color: #f7f7f7;
 }
-.t {
-	border-left: solid 3px #C38393;
+#tablediv tr td:first-of-type {
+	background-color: #e7eef5;
 }
-.tn {
-	text-align: center;
-}
-.th {
-	text-decoration: underline;
+#tablediv tr:first-of-type td {
+	background-color: #cfddeb;
 }
