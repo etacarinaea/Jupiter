@@ -16,7 +16,7 @@ var sat_names = [
 		"Ganymede",
 		"Callisto",
 		"Themisto"
-]
+];
 // orbital period (s)
 var period = [
 		152853.5232,
@@ -256,9 +256,10 @@ function main(){
 	// calculate position and update
 	setInterval( function (){
 		for(var i=0; i< sat_names.length; i++){
-			xPos[i] = calculatePosition(semimajoraxis[i], period[i], SatPANG[i], 0);
-			yPos[i] = calculatePosition(semimajoraxis[i], period[i], SatPANG[i], 1)
-				*Math.cos(def);
+			xPos[i] = calculatePosition(semimajoraxis[i], period[i],
+				SatPANG[i], 0);
+			yPos[i] = calculatePosition(semimajoraxis[i], period[i],
+				SatPANG[i], 1)*Math.cos(def);
 			// if Themisto, add an inclination of 47.48 deg
 			if(sat_names[i]=="Themisto"){rot = rot+47.48}
 			// apply position (with transformation) to elements
@@ -272,15 +273,15 @@ function main(){
 			// sat orb minimum bounding box
 			var orbitbbgroup = document.getElementById("orbits");
 
-			orbitbbgroup.children[i].style.height = Math.abs(semimajoraxis[i]*2 *
-				Math.cos(def) *vs) + "px";
+			orbitbbgroup.children[i].style.height = Math.abs(semimajoraxis[i]*
+				2*Math.cos(def) *vs) + "px";
 			orbitbbgroup.children[i].style.width = semimajoraxis[i]*2 *vs +
 				"px";
 			orbitbbgroup.children[i].style.left = Xo - semimajoraxis[i]*vs -1 +
 				"px";
 			orbitbbgroup.children[i].style.top = Yo + (-semimajoraxis[i] +
-				(semimajoraxis[i]*2 - Math.abs(semimajoraxis[i]*2*Math.cos(def)))/2)*vs -
-				1 + "px";
+				(semimajoraxis[i]*2 - Math.abs(semimajoraxis[i]*2*
+				Math.cos(def)))/2)*vs -1 + "px";
 			if(Math.cos(def)<0){var tmprot = rot;rot += 180;}
 			orbitbbgroup.children[i].style.webkitTransform = "rotate(" +
 				-rot + "deg)";
@@ -289,8 +290,9 @@ function main(){
 			orbitbbgroup.children[i].style.transform = "rotate(" +
 				-rot + "deg)";
 			if(Math.cos(def)<0){rot = tmprot;}
-			orbitbbgroup.children[i].style.borderRadius = Math.abs(semimajoraxis[i]*vs) +
-				"px / " + Math.abs(semimajoraxis[i]*Math.cos(def)*vs) + "px";
+			orbitbbgroup.children[i].style.borderRadius = Math.abs(
+				semimajoraxis[i]*vs) + "px / " + Math.abs(semimajoraxis[i]*
+				Math.cos(def)*vs) + "px";
 
 
 			if(sat_names[i]=="Themisto"){rot = rot-47.48}
