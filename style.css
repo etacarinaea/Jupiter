@@ -7,51 +7,38 @@
 	
 	background-color: #aaa;
 }
-#IoDIV {
-	position: absolute;
-	height: 4px;
-	width: 4px;
-	
-	border-radius: 2px;
-	background-color: #000;
-}
-#EuropaDIV {
+
+
+#satellites > div {
 	position: absolute;
 	height: 2px;
 	width: 2px;
 	
 	border-radius: 1px;
 	background-color: #000;
+}
+
+#IoDIV {
+	height: 4px!important;
+	width: 4px!important;
+	border-radius: 2px!important;
 }
 #GanymedeDIV {
-	position: absolute;
-	height: 8px;
-	width: 8px;
+	height: 8px!important;
+	width: 8px!important;
 	
-	border-radius: 4px;
-	background-color: #000;
+	border-radius: 4px!important;
 }
 #CallistoDIV {
-	position: absolute;
-	height: 6px;
-	width: 6px;
+	height: 6px!important;
+	width: 6px!important;
 	
-	border-radius: 3px;
-	background-color: #000;
-}
-#ThemistoDIV {
-	position: absolute;
-	height: 2px;
-	width: 2px;
-	
-	border-radius: 1px;
-	background-color: #000;
+	border-radius: 3px!important;
 }
 #IoName,
 #EuropaName,
 #GanymedeName,
-#CallistoName,
-#ThemistoName {
+#CallistoName {
 	position: relative;
 	left: 7px;
 	top: 4px;

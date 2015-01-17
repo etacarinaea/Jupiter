@@ -1,58 +1,62 @@
-/* Orbital period, semi-major axis and Jupiter's standard gravitational
- * parameter from http://ssd.jpl.nasa.gov/horizons.cgi (except for Themisto)
+/* Orbital period and semi-major axis from http://ssd.jpl.nasa.gov/horizons.cgi
  */
 
 var t=0, tzer, vs=0.00007, ts=180, rot=0, def = 0;
+var usrbg=true, usropac=true;
 var mouse = {
 	x: 0,
 	y: 0
 };
 
-// array [ JI, JII, JIII, JIV, JXVIII ]
-// satellite names
-var sat_names = [
-		"Io",
-		"Europa",
-		"Ganymede",
-		"Callisto",
-		"Themisto"
-];
-// orbital period (s)
-var period = [
-		152853.5232,
-		306876.384,
-		618153.3792,
-		1441931.1552,
-		11220768
-];
-// semi-major axis (km)
-var semimajoraxis = [
-		421769,
-		671079,
-		1070042.8,
-		1883000,
-		7393216
-];
-/* 2015-Jan-17 "SatPANG" is the angle from the North Celestial
- * Pole measured counter-clockwise (CCW, or east) to a line from primary/planet
- * center to satellite center.
- * Units: DEGREES (position angle)
- */
-var SatPANG = [
-		110.296,
-		111.178,
-		110.685,
-		111.256,
-		0
+var Io = {
+		Name:"Io",
+		Period:152853.5232,
+		SemiMajorAxis:421769,
+		SatPANG:110.296
+}
+
+var Europa = {
+		Name:"Europa",
+		Period:306876.384,
+		SemiMajorAxis:671079,
+		SatPANG:111.178
+}
+
+var Ganymede = {
+		Name:"Ganymede",
+		Period:618153.3792,
+		SemiMajorAxis:1070042.8,
+		SatPANG:110.685
+}
+
+var Callisto = {
+		Name:"Callisto",
+		Period:1441931.1552,
+		SemiMajorAxis:1883000,
+		SatPANG:111.256
+}
+var Test = {
+		Name:"TestSat",
+		Period:1000000,
+		SemiMajorAxis:1500000,
+		SatPANG:50
+}
+
+var satellites = [
+		Io,
+		Europa,
+		Ganymede,
+		Callisto,
+		Test
 ];
 
 // display size of sats
 var csssize = [];
 
 
-var xPos = [sat_names.length];
-var yPos = [sat_names.length];
-for(var i=0; i<sat_names.length; i++){
+var xPos = [satellites.length];
+var yPos = [satellites.length];
+for(var i=0; i<satellites.length; i++){
 	xPos[i]=0;
 	yPos[i]=0;
 }
@@ -103,13 +107,28 @@ function table(){
 	var td = "</td><td>";
 	var table = "<table><tr><td>Name</td><td>Orbital Period (d)</td>"+
 		"<td>Semi-Major Axis (km)</td></tr>";
-	for(var i=0; i<sat_names.length; i++){
-		table += "<tr><td>" + sat_names[i] + td +
-			Math.round(period[i]/60/60/24*1000)/1000 + td +
-		semimajoraxis[i] + "</td></tr>";
+	for(var i=0; i<satellites.length; i++){
+		table += "<tr><td>" + satellites[i].Name + td +
+			Math.round(satellites[i].Period/60/60/24*1000)/1000 + td +
+		satellites[i].SemiMajorAxis + "</td></tr>";
 	}
 	table += "</table>";
 	document.getElementById("tablediv").innerHTML = table;
+}
+
+/* create needed HTML-Elements for a sat
+ */
+function createSat (sat) {
+	var div = document.createElement("div");
+	div.setAttribute("id", sat.Name+"DIV");
+	document.getElementById("satellites").appendChild(div);
+	var span = document.createElement("span");
+	span.setAttribute("id", sat.Name+"Name");
+	span.appendChild(document.createTextNode(sat.Name));
+	document.getElementById(sat.Name+"DIV").appendChild(span);
+	var boundingbox = document.createElement("div");
+	boundingbox.className = "orbb";
+	document.getElementById("orbits").appendChild(boundingbox);
 }
 
 /* add event listeners for keypress, mousemove and click
@@ -215,7 +234,7 @@ function backgroundHandle (elements, opac, index) {
 	}
 
 	// change z-index of objects in the "background"
-	var p = (t % period[index])/period[index];
+	var p = (t % satellites[index].Period)/satellites[index].Period;
 
 	if(p >= 0.5){
 		elements.children[index].style.zIndex = -20;
@@ -225,7 +244,8 @@ function backgroundHandle (elements, opac, index) {
 	
 	// change opacity of objects in the "background"; 0.65=min opacity
 	if(opac){
-		var a = 0.5*Math.sin(t*(2*Math.PI)/period[index]+SatPANG[index]/2)+0.65;
+		var a = 0.5*Math.sin(t*(2*Math.PI)/satellites[index].Period + 
+				satellites[index].SatPANG/2)+0.65;
 		elements.children[index].style.opacity = a+0.5*Math.cos(2*def)+0.5;
 	}else{
 		elements.children[index].style.opacity = 1;
@@ -234,34 +254,33 @@ function backgroundHandle (elements, opac, index) {
 
 
 
-
-
 window.onload =
 function main(){
 	table();
 
-	var usrbg=true, usropac=true;
+	for(var i=0; i<satellites.length; i++){
+		createSat(satellites[i]);
+	}
 
 	catchInput();
 
 	// all satellites grouped in a DOM element
 	var satgroup = document.getElementById("satellites");
 
-	for(var i=0; i<sat_names.length; i++){
-		element = document.getElementById(sat_names[i]+"DIV");
+	for(var i=0; i<satellites.length; i++){
+		element = document.getElementById(satellites[i].Name+"DIV");
 		style = window.getComputedStyle(element);
 		csssize[i] = style.getPropertyValue("height").replace("px","");
 	}
 
 	// calculate position and update
 	setInterval( function (){
-		for(var i=0; i< sat_names.length; i++){
-			xPos[i] = calculatePosition(semimajoraxis[i], period[i],
-				SatPANG[i], 0);
-			yPos[i] = calculatePosition(semimajoraxis[i], period[i],
-				SatPANG[i], 1)*Math.cos(def);
-			// if Themisto, add an inclination of 47.48 deg
-			if(sat_names[i]=="Themisto"){rot = rot+47.48}
+		for(var i=0; i<satellites.length; i++){
+			xPos[i] = calculatePosition(satellites[i].SemiMajorAxis,
+				satellites[i].Period, satellites[i].SatPANG, 0);
+			yPos[i] = calculatePosition(satellites[i].SemiMajorAxis,
+				satellites[i].Period, satellites[i].SatPANG, 1)
+				*Math.cos(def);
 			// apply position (with transformation) to elements
 			satgroup.children[i].style.left = Xo +
 				transformRotation(xPos[i], yPos[i], rot, 0) *vs -
@@ -273,15 +292,16 @@ function main(){
 			// sat orb minimum bounding box
 			var orbitbbgroup = document.getElementById("orbits");
 
-			orbitbbgroup.children[i].style.height = Math.abs(semimajoraxis[i]*
-				2*Math.cos(def) *vs) + "px";
-			orbitbbgroup.children[i].style.width = semimajoraxis[i]*2 *vs +
-				"px";
-			orbitbbgroup.children[i].style.left = Xo - semimajoraxis[i]*vs -1 +
-				"px";
-			orbitbbgroup.children[i].style.top = Yo + (-semimajoraxis[i] +
-				(semimajoraxis[i]*2 - Math.abs(semimajoraxis[i]*2*
-				Math.cos(def)))/2)*vs -1 + "px";
+			orbitbbgroup.children[i].style.height = Math.abs(
+				satellites[i].SemiMajorAxis*2 *Math.cos(def) *vs) + "px";
+			orbitbbgroup.children[i].style.width = satellites[i].SemiMajorAxis*
+				2 *vs +"px";
+			orbitbbgroup.children[i].style.left = Xo -
+				satellites[i].SemiMajorAxis*vs -1 + "px";
+			orbitbbgroup.children[i].style.top = Yo + (
+				-satellites[i].SemiMajorAxis + (satellites[i].SemiMajorAxis*2 -
+				Math.abs(satellites[i].SemiMajorAxis*2*Math.cos(def)))/2)*vs -
+				1 + "px";
 			if(Math.cos(def)<0){var tmprot = rot;rot += 180;}
 			orbitbbgroup.children[i].style.webkitTransform = "rotate(" +
 				-rot + "deg)";
@@ -291,11 +311,9 @@ function main(){
 				-rot + "deg)";
 			if(Math.cos(def)<0){rot = tmprot;}
 			orbitbbgroup.children[i].style.borderRadius = Math.abs(
-				semimajoraxis[i]*vs) + "px / " + Math.abs(semimajoraxis[i]*
-				Math.cos(def)*vs) + "px";
+				satellites[i].SemiMajorAxis*vs) + "px / " + 
+				Math.abs(satellites[i].SemiMajorAxis*Math.cos(def)*vs) + "px";
 
-
-			if(sat_names[i]=="Themisto"){rot = rot-47.48}
 
 			document.getElementById("Jupiter").style.left = Xo -10 + "px";
 			document.getElementById("Jupiter").style.top = Yo -10 + "px";
