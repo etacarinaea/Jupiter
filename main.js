@@ -1,57 +1,57 @@
 /* Orbital period and semi-major axis from http://ssd.jpl.nasa.gov/horizons.cgi
  */
 
-var t=0, tzer, vs=0.00007, ts=180, rot=0, def = 0;
+var t=0, tzer, vs=0.00012, ts=180, rot=0, def = Math.PI/2;
 var year = 2015, month = 0, day = 17, hour = 0, minute = 0;
 var usrbg=true, usropac=true;
+var dotamount = 50;
+var dotcurrentypos = [dotamount];
+var dotcurrentxpos = [dotamount];
 var mouse = {
 	x: 0,
 	y: 0
 };
 
-var Io = {
+var satellites = [];
+
+satellites[0] = {
 		Name:"Io",
 		Period:152853.5232,
 		SemiMajorAxis:421769,
 		SatPANG:110.296
 }
 
-var Europa = {
+satellites[1] = {
 		Name:"Europa",
 		Period:306876.384,
 		SemiMajorAxis:671079,
 		SatPANG:111.178
 }
 
-var Ganymede = {
+satellites[2] = {
 		Name:"Ganymede",
 		Period:618153.3792,
 		SemiMajorAxis:1070042.8,
 		SatPANG:110.685
 }
 
-var Callisto = {
+satellites[3] = {
 		Name:"Callisto",
 		Period:1441931.1552,
 		SemiMajorAxis:1883000,
 		SatPANG:111.256
 }
-var Test = {
-		Name:"TestSat",
-		Period:1000000,
-		SemiMajorAxis:1500000,
-		SatPANG:50
-}
 
-var satellites = [
-		Io,
-		Europa,
-		Ganymede,
-		Callisto,
-		Test
-];
+/* just here to test
+satellites[4] = {
+		Name:"Earth",
+		Period:31536000,
+		SemiMajorAxis:149513000,
+		SatPANG:40
+} */
 
-// display size of sats
+
+// display size of sats (defined by css)
 var csssize = [];
 
 
@@ -63,8 +63,8 @@ for(var i=0; i<satellites.length; i++){
 }
 
 // offset
-var Xo = 300;
-var Yo = 275;
+var Xo = window.innerWidth/2;
+var Yo = window.innerHeight/2;
 
 
 
@@ -74,12 +74,19 @@ var Yo = 275;
 function set(){
 	tzer = t;
 	t = document.getElementById("ut").value;
+	if(t.charAt(0)=="d"){
+		uday = parseFloat(t.substr(1,2));
+		umonth = parseFloat(t.substr(4,2))-1;
+		uyear = parseFloat(t.substr(7,4));
+		var userDate = new Date(uyear,umonth,uday);
+		var startDate = new Date(2015,0,17);
+		t = Math.round((userDate.getTime() - startDate.getTime())/(24*60*60*1000));
+	}
 	ts = document.getElementById("uts").value;
 	vs = document.getElementById("uvs").value/100000;
 	rot = document.getElementById("urot").value;
 	checkIfInUndef();
 	ts = ts*60*60/100;
-	t = t*24*60*60;
 }
 
 
@@ -88,9 +95,11 @@ function set(){
 function checkIfInUndef(){
 	if(!t){
 		t = tzer;
+	}else{
+		t = t*24*60*60;
 	}
 	if(!vs){
-		vs = 0.00007;
+		vs = 0.00012;
 	}
 	if(!ts){
 		ts = 5;
@@ -117,6 +126,7 @@ function table(){
 	document.getElementById("tablediv").innerHTML = table;
 }
 
+
 /* create needed HTML-Elements for a sat
  */
 function createSat (sat) {
@@ -132,16 +142,31 @@ function createSat (sat) {
 	document.getElementById("orbits").appendChild(boundingbox);
 }
 
+function parallax (amount) {
+	for(var i=0; i < amount; i++){
+		var dotypos = Math.floor(Math.random() * window.innerHeight*1.5)-window.innerHeight*0.75;
+		var dotxpos = Math.floor(Math.random() * window.innerWidth)-window.innerWidth*0.5;
+		var dot = document.createElement("div");
+		dot.className = "dot";
+		dot.style.top = dotypos + "px";
+		dot.style.left = dotxpos + "px";
+		document.getElementById("parallax").appendChild(dot);
+		dotcurrentypos[i] = dotypos;
+		dotcurrentxpos[i] = dotxpos;
+	}
+}
+
+
 /* add event listeners for keypress, mousemove and click
  */
-function catchInput(){
+function addAllEventListeners(){
 	document.addEventListener("keypress", function (e){
 		var key = e.keyCode;
 
 		switch(key){
 			case 13: set(); break;
-			case 38: def += 0.02; break;
-			case 40: def -= 0.02; break;
+			case 38: def -= 0.02; break;
+			case 40: def += 0.02; break;
 			case 37: rot += 1; break;
 			case 39: rot -= 1; break;
 			case 45: def = Math.PI/2; break;
@@ -155,25 +180,25 @@ function catchInput(){
 	});
 
 	document.addEventListener("mousemove", function(e){
-		mouse.x = e.pageX;
-		mouse.y = e.pageY;
+		mouse.x = e.clientX;
+		mouse.y = e.clientY;
 	});
 	document.getElementById("mouseboundary").addEventListener("click",
-			function(){
-				Xo = mouse.x;
-				Yo = mouse.y;
-			}
+		function(){
+			Xo = mouse.x;
+			Yo = mouse.y;
+		}
 	);
 }
 
+
 /* output time to HTML
- * 
  */
 function outputDate (time){
 	minute = time/60;
 	var date = new Date(year,month,day,hour,minute);
 	document.getElementById("CurrentTime").innerHTML = "Day(rel.) " + 
-		Math.round(minute/24/60*100)/100 + "<br> Date(Greg.cal.): " +
+		Math.round(minute/24/60*100)/100 + "<br> Date: " +
 		date;
 }
 
@@ -234,9 +259,9 @@ function backgroundHandle (elements, opac, index) {
 	var p = (t % satellites[index].Period)/satellites[index].Period;
 
 	if(p >= 0.5){
-		elements.children[index].style.zIndex = -20;
+		elements.children[index].style.zIndex = 0;
 	}else{
-		elements.children[index].style.zIndex = 20;
+		elements.children[index].style.zIndex = 2;
 	}
 	
 	// change opacity of objects in the "background"; 0.65=min opacity
@@ -253,13 +278,15 @@ function backgroundHandle (elements, opac, index) {
 
 window.onload =
 function main(){
+	parallax(dotamount);
+
 	table();
 
 	for(var i=0; i<satellites.length; i++){
 		createSat(satellites[i]);
 	}
 
-	catchInput();
+	addAllEventListeners();
 
 	// all satellites grouped in a DOM element
 	var satgroup = document.getElementById("satellites");
@@ -299,14 +326,14 @@ function main(){
 				-satellites[i].SemiMajorAxis + (satellites[i].SemiMajorAxis*2 -
 				Math.abs(satellites[i].SemiMajorAxis*2*Math.cos(def)))/2)*vs -
 				1 + "px";
-			if(Math.cos(def)<0){var tmprot = rot;rot += 180;}
+			if(Math.cos(def)<0){rot += 180;}
 			orbitbbgroup.children[i].style.webkitTransform = "rotate(" +
 				-rot + "deg)";
 			orbitbbgroup.children[i].style.MozTransform = "rotate(" +
 				-rot + "deg)";
 			orbitbbgroup.children[i].style.transform = "rotate(" +
 				-rot + "deg)";
-			if(Math.cos(def)<0){rot = tmprot;}
+			if(Math.cos(def)<0){rot -= 180;}
 			orbitbbgroup.children[i].style.borderRadius = Math.abs(
 				satellites[i].SemiMajorAxis*vs) + "px / " + 
 				Math.abs(satellites[i].SemiMajorAxis*Math.cos(def)*vs) + "px";
@@ -315,7 +342,7 @@ function main(){
 			document.getElementById("Jupiter").style.left = Xo -10 + "px";
 			document.getElementById("Jupiter").style.top = Yo -10 + "px";
 			document.getElementById("ref").style.top = Yo -1 + "px";
-			// innerWidth + (JupiderWiwdth/2 - refHeight)
+			// innerWidth + (JupiterWidth/2 - refHeight)
 			document.getElementById("ref").style.left = Xo -
 				window.innerWidth +8 + "px";
 			document.getElementById("ref").style.webkitTransform = "rotate(" +
@@ -332,6 +359,19 @@ function main(){
 				satgroup.children[i].style.opacity = 1;
 			}
 		}
+	
+		
+		var dotgroup = document.getElementById("parallax");
+		for(var i=0; i < dotamount; i++){
+			var tmp = dotcurrentypos[i] - def*100;
+			dotgroup.children[i].style.left = transformRotation(dotcurrentxpos[i],tmp,rot,0)
+				+ Xo + "px";
+			dotgroup.children[i].style.top = transformRotation(dotcurrentxpos[i],tmp,rot,1)
+				+ Yo + "px";
+		}
+
+
+
 
 		outputDate(t);
 

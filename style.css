@@ -1,5 +1,6 @@
 #Jupiter {
-	position: absolute;
+	z-index: 1;
+	position: fixed;
 	height: 20px;
 	width: 20px;
 	
@@ -10,12 +11,12 @@
 
 
 #satellites > div {
-	position: absolute;
+	position: fixed;
 	height: 2px;
 	width: 2px;
 	
 	border-radius: 1px;
-	background-color: #000;
+	background-color: #fff;
 }
 
 #IoDIV {
@@ -35,37 +36,46 @@
 	
 	border-radius: 3px!important;
 }
-#IoName,
-#EuropaName,
-#GanymedeName,
-#CallistoName {
+#satellites span {
 	position: relative;
 	left: 7px;
 	top: 4px;
+
+	color: #aaa;
 }
 
 .orbb {
 	z-index: 0;
-	position:absolute;
-	border: 1px solid #f00;
-	opacity: 0.1;
+	position: fixed;
+	border: 1px solid #12589d;
+	opacity: 0.3;
 }
-#orbits div:nth-last-child(2) {
-	background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
-	background: -o-linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
-	background: -moz-linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
-	background: linear-gradient(rgba(0,0,0,0), rgba(255,0,0,1));
+#orbits div:last-child {
+	background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(18,88,157,1));
+	background: -o-linear-gradient(rgba(0,0,0,0), rgba(18,88,157,1));
+	background: -moz-linear-gradient(rgba(0,0,0,0), rgba(18,88,157,1));
+	background: linear-gradient(rgba(0,0,0,0), rgba(18,88,157,1));
 }
 
 
-#ref{
-	position: absolute;
+#ref {
+	position: fixed;
 	height: 2px;
 	width: 200%;
 	
-	background-color: #f00;
-	opacity: 0.1;
+	background-color: #12589d;
+	opacity: 0.3;
 }
+
+
+
+.dot {
+	position: fixed;
+	height: 1px;
+	width: 1px;
+	background-color: #fff;
+}
+
 
 
 #mouseboundary {
@@ -82,9 +92,13 @@
 /*** UI ***/
 
 
+html {
+	overflow-x: hidden;
+}
+
 
 body {
-	background-color: #f1f1f1;
+	background-color: #101018;
 	
 	color: #333;
 	font-family: 'Arial', sans-serif;
@@ -93,45 +107,88 @@ body {
 
 
 header {
-	z-index: 100;
-	position: absolute;
+	z-index: 6;
+	position: fixed;
 	top: 0;
 	left: 0;
 	height: 60px;
 	width: 100%;
 	
 	font-size: 30px;
-	line-height: 50px;
-	padding: 10px;
+	color: #737373;
 	
-	border-bottom: 2px solid #12589d;
+	overflow: hidden;
+}
+header > img {
+	height: 50px;
+	margin-top: 5px;
+	margin-left: 5px;
+}
+header > div {
+	height: 60px;
+	width: 500px;
+	line-height: 60px;
+	font-size: 23px;
+	display: inline-block;
+	vertical-align: top;
+}
 
-	background-color: #fff;
-}
-header > span {
+nav {
 	position: relative;
-	top: -10px;
-	left: 10px;
+	top: 0;
+	left: 0;
+	height: 25px;
+	width: 100%;
 }
+
+
+#display {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+
+	width: 100%;
+	
+	font-size: 14px;
+	color: #737373;
+
+	padding: 20px;
+}
+#display > div {
+	display: inline-block;
+}
+#display > span {
+	position: absolute;
+	bottom: 20px;
+	right: 60px;
+	text-align: right;
+	display: inline-block;
+	color: #7f7f7f;
+	padding: 10px;
+	background-color: rgba(0,0,0,0.2);
+	border: 0;
+	border-right: 1px solid #12589d;
+}
+
 
 main {
-	z-index: 100;
+	z-index: 4;
 	position: absolute;
-	top: 525px;
+	top: 100%;
 	left: 0;
 	
-	font-family: 'Arial', sans-serif;
+	color: #101018;
 	font-size: 16px;
-	padding: 20px 20px 0 55px;
+	padding: 20px 20px 0 20px;
 	
 	width: 100%;
-	height: 700px;
-	
+	height: 100%;
+
+	background-color: #aaa;
+
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	
-	background-color: #fff;
 }
 input {
 	margin: 0px 20px 2px 3px;
@@ -139,23 +196,19 @@ input {
 	width: 120px;
 	height: 18px;
 	color: #7f7f7f;
-	background-color: #f1f1f1;
+	background-color: rgba(0,0,0,0.2);
 	border: 0;
-	border-left: 3px solid #12589d;
+	border-left: 1px solid #12589d;
 }
-main .in {
+main #in {
 	display: inline-block;
 }
 main >:nth-child(2) {
 	line-height:21.5px;
 }
 
-#tablediv table {
-	background-color: #f7f7f7;
-}
-#tablediv tr td:first-of-type {
-	background-color: #e7eef5;
-}
+#tablediv table,
+#tablediv tr td:first-of-type,
 #tablediv tr:first-of-type td {
-	background-color: #cfddeb;
+	background-color: rgba(0,0,0,0.2);
 }
