@@ -160,7 +160,7 @@ function parallax (amount) {
 /* add event listeners for keypress, mousemove and click
  */
 function addAllEventListeners(){
-	document.addEventListener("keypress", function (e){
+	document.addEventListener("keydown", function (e){
 		var key = e.keyCode;
 
 		switch(key){
